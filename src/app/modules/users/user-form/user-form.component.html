@@ -1,0 +1,43 @@
+<div class="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow">
+  <h1 class="mb-4 text-2xl font-semibold text-gray-800">{{ isEdit ? 'Editar usuario' : 'Nuevo usuario' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-x-4">
+    <mat-form-field appearance="outline" class="md:col-span-2">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.controls['name'].hasError('required')">El nombre es obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="md:col-span-2">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="form.controls['email'].hasError('required')">El email es obligatorio</mat-error>
+      <mat-error *ngIf="form.controls['email'].hasError('email')">Ingresa un email válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="md:col-span-2">
+      <mat-label>{{ isEdit ? 'Nueva contraseña (opcional)' : 'Contraseña' }}</mat-label>
+      <input matInput type="password" formControlName="password" autocomplete="new-password" />
+      <mat-hint *ngIf="isEdit">Déjala vacía para mantener la actual</mat-hint>
+      <mat-error *ngIf="form.controls['password'].hasError('required')">La contraseña es obligatoria</mat-error>
+      <mat-error *ngIf="form.controls['password'].hasError('minlength')">Mínimo 4 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="!isEdit" class="md:col-span-2">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="role">
+        <mat-option value="user">Usuario</mat-option>
+        <mat-option value="admin">Administrador</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <p *ngIf="errorMessage" class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 md:col-span-2">{{ errorMessage }}</p>
+
+    <div class="mt-2 flex justify-end gap-2 md:col-span-2">
+      <a mat-button routerLink="/users">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

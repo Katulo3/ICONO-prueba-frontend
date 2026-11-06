@@ -1,0 +1,48 @@
+<div class="mx-auto max-w-2xl rounded-lg bg-white p-6 shadow">
+  <h1 class="mb-4 text-2xl font-semibold text-gray-800">{{ isEdit ? 'Editar producto' : 'Nuevo producto' }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-x-4">
+    <mat-form-field appearance="outline" class="md:col-span-2">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.controls['name'].hasError('required')">El nombre es obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="md:col-span-2">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+      <mat-error *ngIf="form.controls['description'].hasError('required')">La descripción es obligatoria</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Categoría</mat-label>
+      <input matInput formControlName="category" />
+      <mat-error *ngIf="form.controls['category'].hasError('required')">La categoría es obligatoria</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" min="0" step="0.01" formControlName="price" />
+      <mat-error *ngIf="form.controls['price'].hasError('required')">El precio es obligatorio</mat-error>
+      <mat-error *ngIf="form.controls['price'].hasError('min')">El precio no puede ser negativo</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Stock</mat-label>
+      <input matInput type="number" min="0" step="1" formControlName="stock" />
+      <mat-error *ngIf="form.controls['stock'].hasError('required')">El stock es obligatorio</mat-error>
+      <mat-error *ngIf="form.controls['stock'].hasError('min') || form.controls['stock'].hasError('pattern')">
+        El stock debe ser un entero mayor o igual a 0
+      </mat-error>
+    </mat-form-field>
+
+    <p *ngIf="errorMessage" class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 md:col-span-2">{{ errorMessage }}</p>
+
+    <div class="mt-2 flex justify-end gap-2 md:col-span-2">
+      <a mat-button routerLink="/products">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>
