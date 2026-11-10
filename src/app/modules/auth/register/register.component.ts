@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
@@ -19,8 +19,16 @@ export class RegisterComponent {
     this.form = this.fb.nonNullable.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(4)]]
+      password: ['', [Validators.required, Validators.minLength(4)]],
+      confirmPassword: ['', [Validators.required, this.passwordsMatch]]
     });
+
+    this.form.controls['password'].valueChanges.subscribe(() => this.form.controls['confirmPassword'].updateValueAndValidity());
+  }
+
+  private passwordsMatch(control: AbstractControl): ValidationErrors | null {
+    const password = control.parent?.get('password')?.value;
+    return control.value === password ? null : { mismatch: true };
   }
 
   submit(): void {
