@@ -4,8 +4,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 import { AuthService } from './services/auth.service';
-import { CredentialsInterceptor } from './interceptors/credentials.interceptor';
-import { AuthRefreshInterceptor } from './interceptors/auth-refresh.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export function restoreSession(auth: AuthService) {
   return () => firstValueFrom(auth.loadSession());
@@ -14,15 +13,14 @@ export function restoreSession(auth: AuthService) {
 @NgModule({
   imports: [CommonModule, HttpClientModule],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CredentialsInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthRefreshInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: APP_INITIALIZER, useFactory: restoreSession, deps: [AuthService], multi: true }
   ]
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parent: CoreModule) {
     if (parent) {
-      throw new Error('CoreModule ya fue importado. Impórtalo solo en AppModule.');
+      throw new Error('CoreModule ya fue importado. ImpÃ³rtalo solo en AppModule.');
     }
   }
 }
