@@ -14,6 +14,7 @@ const STATUS_MESSAGES = new Map<number, string>([
   [401, 'Tu sesión expiró. Inicia sesión nuevamente'],
   [403, 'No tienes permiso para realizar esta acción'],
   [404, 'No se encontró el recurso solicitado'],
+  [408, 'El servidor tardó demasiado en responder. Inténtalo de nuevo'],
   [429, 'Demasiados intentos. Espera un momento e inténtalo de nuevo'],
   [500, 'Error interno del servidor']
 ]);

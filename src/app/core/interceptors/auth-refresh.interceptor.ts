@@ -6,6 +6,7 @@ import {
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, catchError, finalize, share, switchMap, throwError } from 'rxjs';
 
 import { API_URL } from '../config/api.config';
@@ -27,13 +28,25 @@ export class AuthRefreshInterceptor implements HttpInterceptor {
         }
         return this.getRefresh().pipe(
           catchError(() => {
-            this.injector.get(AuthService).clearSession();
+            this.handleSessionExpired();
             return throwError(() => error);
           }),
           switchMap(() => next.handle(request))
         );
       })
     );
+  }
+
+  /** Limpia la sesión y, si había un usuario activo, lo envía al login conservando la ruta actual. */
+  private handleSessionExpired(): void {
+    const auth = this.injector.get(AuthService);
+    const hadSession = auth.currentUser !== null;
+    auth.clearSession();
+
+    if (hadSession) {
+      const router = this.injector.get(Router);
+      router.navigate(['/auth/login'], { queryParams: { returnUrl: router.url } });
+    }
   }
 
   private shouldRefresh(request: HttpRequest<unknown>, error: unknown): boolean {

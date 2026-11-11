@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
 import { Product, ProductInput } from '../models/product.model';
+import { getApiErrorMessage } from '../../../core/utils/api-error-message';
 import { ProductService } from '../services/product.service';
 
 @Component({
@@ -49,7 +50,7 @@ export class ProductFormComponent implements OnInit {
           this.loading = false;
         },
         error: (err: HttpErrorResponse) => {
-          this.notify(err.error?.message ?? 'No se pudo cargar el producto');
+          this.notify(getApiErrorMessage(err, 'No se pudo cargar el producto'));
           this.router.navigate(['/products']);
         }
       });
@@ -76,7 +77,7 @@ export class ProductFormComponent implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.loading = false;
-        this.errorMessage = err.error?.message ?? 'No se pudo guardar el producto';
+        this.errorMessage = getApiErrorMessage(err, 'No se pudo guardar el producto');
       }
     });
   }
