@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { getApiErrorMessage } from '../../../core/utils/api-error-message';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData
@@ -93,7 +94,7 @@ export class ProductListComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.loading = false;
-          this.notify(err.error?.message ?? 'No se pudieron cargar los productos');
+          this.notify(getApiErrorMessage(err, 'No se pudieron cargar los productos'));
         }
       });
   }
@@ -104,7 +105,7 @@ export class ProductListComponent implements OnInit {
         this.notify('Producto eliminado');
         this.load();
       },
-      error: (err: HttpErrorResponse) => this.notify(err.error?.message ?? 'No se pudo eliminar el producto')
+      error: (err: HttpErrorResponse) => this.notify(getApiErrorMessage(err, 'No se pudo eliminar el producto'))
     });
   }
 

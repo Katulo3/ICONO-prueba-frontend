@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { User, UserRole } from '../../../core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { getApiErrorMessage } from '../../../core/utils/api-error-message';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData
@@ -102,7 +103,7 @@ export class UserListComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.loading = false;
-          this.notify(err.error?.message ?? 'No se pudieron cargar los usuarios');
+          this.notify(getApiErrorMessage(err, 'No se pudieron cargar los usuarios'));
         }
       });
   }
@@ -113,7 +114,7 @@ export class UserListComponent implements OnInit {
         this.notify('Usuario eliminado');
         this.load();
       },
-      error: (err: HttpErrorResponse) => this.notify(err.error?.message ?? 'No se pudo eliminar el usuario')
+      error: (err: HttpErrorResponse) => this.notify(getApiErrorMessage(err, 'No se pudo eliminar el usuario'))
     });
   }
 

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { User, UserRole } from '../../../core/models/user.model';
+import { getApiErrorMessage } from '../../../core/utils/api-error-message';
 import { UsersService } from '../services/users.service';
 
 @Component({
@@ -54,7 +55,7 @@ export class UserFormComponent implements OnInit {
           this.loading = false;
         },
         error: (err: HttpErrorResponse) => {
-          this.notify(err.error?.message ?? 'No se pudo cargar el usuario');
+          this.notify(getApiErrorMessage(err, 'No se pudo cargar el usuario'));
           this.router.navigate(['/users']);
         }
       });
@@ -92,7 +93,7 @@ export class UserFormComponent implements OnInit {
 
   private fail(err: HttpErrorResponse, fallback: string): void {
     this.loading = false;
-    this.errorMessage = err.error?.message ?? fallback;
+    this.errorMessage = getApiErrorMessage(err, fallback);
   }
 
   private notify(message: string): void {
