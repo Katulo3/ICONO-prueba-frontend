@@ -1,0 +1,23 @@
+<div class="rounded-lg bg-white p-4 shadow">
+  <div class="mb-3">
+    <h2 class="text-lg font-semibold text-gray-800">{{ statistic.title }}</h2>
+    <p class="text-sm text-gray-500">Comparado por: {{ compareLabel }}</p>
+    <p *ngIf="statistic.dateFrom || statistic.dateTo" class="text-xs text-gray-400">
+      Periodo: {{ statistic.dateFrom ? (statistic.dateFrom | date: 'dd/MM/yyyy':'UTC') : 'inicio' }}
+      - {{ statistic.dateTo ? (statistic.dateTo | date: 'dd/MM/yyyy':'UTC') : 'hoy' }}
+    </p>
+  </div>
+
+  <app-skeleton-loader *ngIf="loading" [rows]="3" [columns]="1"></app-skeleton-loader>
+
+  <ng-container *ngIf="!loading && data">
+    <p *ngIf="data.total === 0" class="py-8 text-center text-gray-500">Sin datos en el periodo seleccionado.</p>
+    <app-statistic-chart
+      *ngIf="data.total > 0"
+      [chartType]="data.chartType"
+      [labels]="data.labels"
+      [values]="data.values"
+      [label]="data.title">
+    </app-statistic-chart>
+  </ng-container>
+</div>

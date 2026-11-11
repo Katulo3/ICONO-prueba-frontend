@@ -1,0 +1,14 @@
+<div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+  <h1 class="text-2xl font-semibold text-gray-800">Estadísticas</h1>
+  <a *ngIf="isAdmin" mat-flat-button color="primary" routerLink="/statistics/new">Nueva estadística</a>
+</div>
+
+<app-skeleton-loader *ngIf="loading" [rows]="2" [columns]="2"></app-skeleton-loader>
+
+<p *ngIf="!loading && statistics.length === 0" class="py-12 text-center text-gray-500">
+  Aún no hay estadísticas creadas.
+</p>
+
+<div *ngIf="!loading" class="mx-auto flex max-w-3xl flex-col gap-6">
+  <app-statistic-card *ngFor="let statistic of statistics" [statistic]="statistic"></app-statistic-card>
+</div>

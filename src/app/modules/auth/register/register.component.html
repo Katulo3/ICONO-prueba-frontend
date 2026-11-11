@@ -26,7 +26,12 @@
           <mat-error *ngIf="form.controls['password'].hasError('minlength')">Mínimo 4 caracteres</mat-error>
         </mat-form-field>
 
-        <p *ngIf="errorMessage" class="mb-3 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{{ errorMessage }}</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" [errorStateMatcher]="confirmErrorMatcher" />
+          <mat-error *ngIf="form.controls['confirmPassword'].hasError('required')">Confirma la contraseña</mat-error>
+          <mat-error *ngIf="form.hasError('passwordsMismatch')">Las contraseñas no coinciden</mat-error>
+        </mat-form-field>
 
         <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
           {{ loading ? 'Registrando...' : 'Registrarme' }}

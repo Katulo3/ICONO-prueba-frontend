@@ -1,13 +1,14 @@
 <mat-toolbar color="primary" *ngIf="auth.user$ | async as user" class="sticky top-0 z-10 shadow">
-  <span class="font-semibold">E-sueldos</span>
+  <span class="font-semibold">Icono</span>
 
   <nav class="ml-6 flex gap-2">
     <a mat-button routerLink="/products" routerLinkActive="bg-white/20">Productos</a>
     <a *ngIf="user.role === 'admin'" mat-button routerLink="/users" routerLinkActive="bg-white/20">Usuarios</a>
+    <a mat-button routerLink="/statistics" routerLinkActive="bg-white/20">Estadísticas</a>
   </nav>
 
   <span class="flex-1"></span>
-
-  <span class="mr-4 text-sm">{{ user.name }} ({{ user.role }})</span>
+  
+  <button mat-flat-button color="primary" type="button" routerLink="/users/profile" class="mr-4 !text-white">{{ user.name }} - {{ user.role }}</button>
   <button mat-stroked-button type="button" (click)="logout()">Cerrar sesión</button>
 </mat-toolbar>

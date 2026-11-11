@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor';
 
 export function restoreSession(auth: AuthService) {
   return () => firstValueFrom(auth.loadSession());
@@ -14,6 +15,8 @@ export function restoreSession(auth: AuthService) {
   imports: [CommonModule, HttpClientModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // Debe ir al final para que todas las peticiones a la API tengan timeout.
+    { provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true },
     { provide: APP_INITIALIZER, useFactory: restoreSession, deps: [AuthService], multi: true }
   ]
 })

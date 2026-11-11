@@ -6,11 +6,13 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material/material.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { SkeletonLoaderComponent } from './components/skeleton-loader/skeleton-loader.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    SkeletonLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     ReactiveFormsModule,
     RouterModule,
     MaterialModule,
-    NavbarComponent
+    NavbarComponent,
+    SkeletonLoaderComponent
   ]
 })
 export class SharedModule { }

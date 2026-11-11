@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 
 import { AuthService } from '../../../core/services/auth.service';
+import { getApiErrorMessage } from '../../../core/utils/api-error-message';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData
@@ -27,6 +29,7 @@ export class ProductListComponent implements OnInit {
   totalResults = 0;
   page = 1;
   pageSize = 10;
+  sortBy = '';
   loading = false;
 
   constructor(
@@ -62,6 +65,12 @@ export class ProductListComponent implements OnInit {
     this.load();
   }
 
+  onSort(sort: Sort): void {
+    this.sortBy = sort.direction ? `${sort.active}:${sort.direction}` : '';
+    this.page = 1;
+    this.load();
+  }
+
   confirmDelete(product: Product): void {
     const data: ConfirmDialogData = {
       title: 'Eliminar producto',
@@ -84,7 +93,7 @@ export class ProductListComponent implements OnInit {
     this.loading = true;
 
     this.productService
-      .list({ page: this.page, limit: this.pageSize, name: name.trim(), category: category.trim() })
+      .list({ page: this.page, limit: this.pageSize, name: name.trim(), category: category.trim(), sortBy: this.sortBy })
       .subscribe({
         next: (res) => {
           this.products = res.results;
@@ -93,7 +102,7 @@ export class ProductListComponent implements OnInit {
         },
         error: (err: HttpErrorResponse) => {
           this.loading = false;
-          this.notify(err.error?.message ?? 'No se pudieron cargar los productos');
+          this.notify(getApiErrorMessage(err, 'No se pudieron cargar los productos'));
         }
       });
   }
@@ -104,7 +113,7 @@ export class ProductListComponent implements OnInit {
         this.notify('Producto eliminado');
         this.load();
       },
-      error: (err: HttpErrorResponse) => this.notify(err.error?.message ?? 'No se pudo eliminar el producto')
+      error: (err: HttpErrorResponse) => this.notify(getApiErrorMessage(err, 'No se pudo eliminar el producto'))
     });
   }
 

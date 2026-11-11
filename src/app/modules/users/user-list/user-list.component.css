@@ -1,0 +1,25 @@
+.role-admin,
+.role-user {
+  --mdc-chip-label-text-color: #ffffff;
+  color: #ffffff;
+  border-radius: 9999px;
+}
+
+.role-admin ::ng-deep .mdc-evolution-chip,
+.role-admin ::ng-deep .mdc-evolution-chip__cell,
+.role-admin ::ng-deep .mdc-evolution-chip__action {
+  background-color: #f97316;
+  border-radius: 9999px;
+}
+
+.role-user ::ng-deep .mdc-evolution-chip,
+.role-user ::ng-deep .mdc-evolution-chip__cell,
+.role-user ::ng-deep .mdc-evolution-chip__action {
+  background-color: #2563eb;
+  border-radius: 9999px;
+}
+
+.role-admin ::ng-deep .mdc-evolution-chip__text-label,
+.role-user ::ng-deep .mdc-evolution-chip__text-label {
+  color: #ffffff;
+}
