@@ -1,0 +1,32 @@
+<h1 class="mb-4 text-2xl font-semibold text-gray-800">Mi perfil</h1>
+
+<mat-card class="max-w-lg">
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="form.controls['name'].hasError('required')">El nombre es obligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="form.controls['email'].hasError('required')">El email es obligatorio</mat-error>
+        <mat-error *ngIf="form.controls['email'].hasError('email')">Ingresa un email válido</mat-error>
+      </mat-form-field>
+
+      <dl *ngIf="auth.user$ | async as user" class="mb-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-3 text-sm">
+        <dt class="text-gray-500">Rol</dt>
+        <dd class="font-medium text-gray-800">{{ user.role === 'admin' ? 'Administrador' : 'Usuario' }}</dd>
+
+        <dt class="text-gray-500">Email verificado</dt>
+        <dd class="font-medium text-gray-800">{{ user.isEmailVerified ? 'Sí' : 'No' }}</dd>
+      </dl>
+
+      <div class="flex justify-end">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loading || form.invalid">Guardar cambios</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

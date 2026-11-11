@@ -11,6 +11,7 @@ export interface UserQuery {
   limit?: number;
   name?: string;
   role?: UserRole | '';
+  sortBy?: string;
 }
 
 export interface UserCreateInput {

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 
 import { User, UserRole } from '../../../core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
@@ -33,6 +34,7 @@ export class UserListComponent implements OnInit {
   totalResults = 0;
   page = 1;
   pageSize = 10;
+  sortBy = '';
   loading = false;
 
   constructor(
@@ -68,6 +70,12 @@ export class UserListComponent implements OnInit {
     this.load();
   }
 
+  onSort(sort: Sort): void {
+    this.sortBy = sort.direction ? `${sort.active}:${sort.direction}` : '';
+    this.page = 1;
+    this.load();
+  }
+
   isCurrentUser(user: User): boolean {
     return this.auth.currentUser?.id === user.id;
   }
@@ -94,7 +102,7 @@ export class UserListComponent implements OnInit {
     this.loading = true;
 
     this.usersService
-      .list({ page: this.page, limit: this.pageSize, name: name.trim(), role })
+      .list({ page: this.page, limit: this.pageSize, name: name.trim(), role, sortBy: this.sortBy })
       .subscribe({
         next: (res) => {
           this.users = res.results;

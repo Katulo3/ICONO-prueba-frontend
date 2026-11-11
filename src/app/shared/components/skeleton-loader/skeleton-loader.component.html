@@ -1,0 +1,8 @@
+<div class="space-y-4 p-4" aria-busy="true" aria-label="Cargando">
+  <div
+    *ngFor="let row of rowItems"
+    class="grid gap-4"
+    [style.grid-template-columns]="'repeat(' + columns + ', minmax(0, 1fr))'">
+    <div *ngFor="let col of columnItems" class="h-4 animate-pulse rounded bg-gray-200"></div>
+  </div>
+</div>
