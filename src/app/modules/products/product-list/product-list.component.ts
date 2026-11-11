@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 
 import { AuthService } from '../../../core/services/auth.service';
 import {
@@ -27,6 +28,7 @@ export class ProductListComponent implements OnInit {
   totalResults = 0;
   page = 1;
   pageSize = 10;
+  sortBy = '';
   loading = false;
 
   constructor(
@@ -62,6 +64,12 @@ export class ProductListComponent implements OnInit {
     this.load();
   }
 
+  onSort(sort: Sort): void {
+    this.sortBy = sort.direction ? `${sort.active}:${sort.direction}` : '';
+    this.page = 1;
+    this.load();
+  }
+
   confirmDelete(product: Product): void {
     const data: ConfirmDialogData = {
       title: 'Eliminar producto',
@@ -84,7 +92,7 @@ export class ProductListComponent implements OnInit {
     this.loading = true;
 
     this.productService
-      .list({ page: this.page, limit: this.pageSize, name: name.trim(), category: category.trim() })
+      .list({ page: this.page, limit: this.pageSize, name: name.trim(), category: category.trim(), sortBy: this.sortBy })
       .subscribe({
         next: (res) => {
           this.products = res.results;

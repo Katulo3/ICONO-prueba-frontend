@@ -14,4 +14,5 @@ export interface ProductQuery {
   limit?: number;
   name?: string;
   category?: string;
+  sortBy?: string;
 }
